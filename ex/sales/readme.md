@@ -153,8 +153,103 @@ ALTER TABLE nation ADD CONSTRAINT nation_region_fk FOREIGN KEY (n_regionkey) REF
 ```
 
 ### Task 2
+Build stage layer for DWH.
+
+Let's JOIN raw tables:
+- Create `raw_inventory` table
+- Create `raw_transactions` table
+- Create `raw_orders` table
+
+What JOIN type do we need?
+
+Let's split tables in stage layer to raw_stage (tables) and stage (views)
+- Create views `v_stg_inventory` for `raw_inventory`
+- Create views `v_stg_transactions` for `raw_transactions`
+- Create views `v_stg_orders` for `raw_orders`
+
+### Task 3
 Aggregating data:
-- build dimention-model (fact f_order) - star scheme
+- build dimention-model (facts `f_lineorder_flat` and `f_orders_stats`) - star scheme
+
+Adapt queries:
+```sql
+SELECT
+      L_ITEMKEY
+    , L_ORDERKEY
+    , L_PARTKEY
+    , L_SUPPKEY
+    , L_LINENUMBER
+    , L_QUANTITY
+    , L_EXTENDEDPRICE
+    , L_DISCOUNT
+    , L_TAX
+    , L_RETURNFLAG
+    , L_LINESTATUS
+    , L_SHIPDATE
+    , L_COMMITDATE
+    , L_RECEIPTDATE
+    , L_SHIPINSTRUCT
+    , L_SHIPMODE
+    , L_COMMENT
+    
+    , O_ORDERKEY
+    , O_CUSTKEY
+    , O_ORDERSTATUS
+    , O_TOTALPRICE
+    , O_ORDERDATE
+    , O_ORDERPRIORITY
+    , O_CLERK
+    , O_SHIPPRIORITY
+    , O_COMMENT
+
+    , C_CUSTKEY
+    , C_NAME
+    , C_ADDRESS
+    , C_NATIONKEY
+    , C_PHONE
+    , C_ACCTBAL
+    , C_MKTSEGMENT
+    , C_COMMENT
+
+    , S_SUPPKEY
+    , S_NAME
+    , S_ADDRESS
+    , S_NATIONKEY
+    , S_PHONE
+    , S_ACCTBAL
+    , S_COMMENT
+
+    , P_PARTKEY
+    , P_NAME
+    , P_MFGR
+    , P_BRAND
+    , P_TYPE
+    , P_SIZE
+    , P_CONTAINER
+    , P_RETAILPRICE
+    , P_COMMENT    
+
+FROM lineitem AS l
+    INNER JOIN orders AS o ON o.O_ORDERKEY = l.L_ORDERKEY
+    INNER JOIN customer AS c ON c.C_CUSTKEY = o.O_CUSTKEY
+    INNER JOIN supplier AS s ON s.S_SUPPKEY = l.L_SUPPKEY
+    INNER JOIN part AS p ON p.P_PARTKEY = l.L_PARTKEY;
+
+SELECT
+    toYear(O_ORDERDATE) AS O_ORDERYEAR
+    , O_ORDERSTATUS
+    , O_ORDERPRIORITY
+    , count(DISTINCT O_ORDERKEY) AS num_orders
+    , count(DISTINCT C_CUSTKEY) AS num_customers
+    , sum(L_EXTENDEDPRICE * L_DISCOUNT) AS revenue
+FROM <table name>
+WHERE 1=1
+GROUP BY
+    toYear(O_ORDERDATE)
+    , O_ORDERSTATUS
+    , O_ORDERPRIORITY;
+```
+
 - Simulate next day load
 - Prepare Point-in-Time & Bridge Tables
 - query data about q1, q2, q3 orders
