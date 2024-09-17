@@ -1,5 +1,5 @@
 # Работа с БД SQL
-![course_icon](./database_postgres.png)
+<img src="./database_postgres.png" alt="drawing" style="width:200px;"/>
 
 ## Организационная информация:
 - [Конспект в yonote](https://apolyakov.yonote.ru/share/ad246e3e-965a-43d5-8c58-2ae609f589d3)
