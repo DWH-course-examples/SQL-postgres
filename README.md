@@ -1,5 +1,5 @@
 # Работа с БД SQL
-![](./database_postgres.png)
+![course_icon](./database_postgres.png)
 
 ## Организационная информация:
 - [Конспект в yonote](https://apolyakov.yonote.ru/share/ad246e3e-965a-43d5-8c58-2ae609f589d3)
