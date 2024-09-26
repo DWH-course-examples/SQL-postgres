@@ -7,6 +7,12 @@
 - Ubuntu: sa - 12345678
 - Postgres: postgres - без пароля, root - postgres
 
+Чат 1:
+https://www.db-fiddle.com/f/jXmhmdePRrMNN1AmCjVooZ/0#&togetherjs=6TeInkcAP4
+
+Чат 2:
+https://www.db-fiddle.com/f/ofKNUjZjzrHFjof9db2Yye/0#&togetherjs=6TeInkcAP4
+
 ## Программа курса (40 ак. ч.)
 1. популярные архитектуры работы с данными
 2. популярные инструменты для работы с данными
